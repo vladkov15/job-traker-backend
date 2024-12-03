@@ -11,13 +11,15 @@ dotenv.config();
 
 const app = new Koa();
 const router = new Router();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4001;
+const mongooseURI = process.env.MONGO_URI
+if(mongooseURI){
+  mongoose.connect(mongooseURI, {
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((error) => console.error("Error connecting to MongoDB", error));
+}
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/vacancy-responses", {
-
-})
-.then(() => console.log("Connected to MongoDB"))
-.catch((error) => console.error("Error connecting to MongoDB", error));
 
 
 app.use(cors());
@@ -33,8 +35,8 @@ app.use(async (ctx, next) => {
 app.use(jobRoutes.routes()).use(jobRoutes.allowedMethods());
 
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(() => {
+  console.log(`Server running  `);
 });
 
 
